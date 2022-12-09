@@ -33,6 +33,7 @@ class CourseAdmin(admin.ModelAdmin):
             'fields': (
                 'slug',
                 'title',
+                'thumbnail',
                 'description',
             )
         }),
@@ -62,21 +63,22 @@ class UnitAdmin(admin.ModelAdmin):
 
 class LessonAdmin(admin.ModelAdmin):
     inlines = [InLineExercises]
-    list_display = ('title', 'slug', 'description', 'course', 'unit', 'position', 'video_url', 'is_free')
+    list_display = ('title', 'slug', 'description', 'course', 'unit', 'position', 'is_free')
     list_display_links = ('title', 'slug', 'description')
-    list_editable = ('course', 'unit', 'position', 'video_url', 'is_free')
-    list_filter = ('title', 'slug', 'description', 'course', 'unit', 'position', 'video_url', 'is_free')
-    search_fields = ('title', 'slug', 'description', 'course', 'unit', 'position', 'video_url', 'is_free')
+    list_editable = ('course', 'unit', 'position', 'is_free')
+    list_filter = ('title', 'slug', 'description', 'course', 'unit', 'position', 'is_free')
+    search_fields = ('title', 'slug', 'description', 'course', 'unit', 'position', 'is_free')
     fieldsets = (
         (None, {
             'fields': (
                 'slug',
                 'title',
                 'description',
+                'thumbnail',
                 'course',
                 'unit',
                 'position',
-                'video_url',
+                'video',
                 'is_free',
             )
         }),

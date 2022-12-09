@@ -8,3 +8,5 @@ __pycache__/
 db.sqlite3
 data/
 .dockercommand
+courses/google_drive/credentials.json
+courses/google_drive/token.json
