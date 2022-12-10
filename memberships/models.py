@@ -1,9 +1,10 @@
-from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 
 from datetime import datetime
+
 import stripe
+from django.conf import settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 

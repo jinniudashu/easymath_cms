@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Course, Lesson, Unit, Exercises
+from courses.batch_upload.courses_iterator import courses_index
 
 
 class InLineLesson(admin.TabularInline):
@@ -22,12 +23,18 @@ class InLineExercises(admin.TabularInline):
 
 
 class CourseAdmin(admin.ModelAdmin):
+    def batch_upload(self, request, queryset):
+        try:
+            print(next(courses_index))
+        except StopIteration:
+            print('Done')
+            
+
     inlines = [InLineLesson]
-    list_display = ('title', 'slug', 'description', 'combine_title_and_slug')
+    list_display = ('title', 'description', 'combine_title_and_slug')
     list_display_links = ('title', 'combine_title_and_slug')
-    list_editable = ('slug', )
-    list_filter = ('title', 'slug')
-    search_fields = ('title', 'slug')
+    list_filter = ('title',)
+    search_fields = ('title',)
     fieldsets = (
         (None, {
             'fields': (
@@ -38,6 +45,7 @@ class CourseAdmin(admin.ModelAdmin):
             )
         }),
     )
+    actions = ['batch_upload']
 
     def combine_title_and_slug(self, obj):
         return "{} - {}".format(obj.title, obj.slug)
@@ -63,11 +71,11 @@ class UnitAdmin(admin.ModelAdmin):
 
 class LessonAdmin(admin.ModelAdmin):
     inlines = [InLineExercises]
-    list_display = ('title', 'slug', 'description', 'course', 'unit', 'position', 'is_free')
-    list_display_links = ('title', 'slug', 'description')
+    list_display = ('title', 'description', 'course', 'unit', 'position', 'is_free')
+    list_display_links = ('title', 'description')
     list_editable = ('course', 'unit', 'position', 'is_free')
-    list_filter = ('title', 'slug', 'description', 'course', 'unit', 'position', 'is_free')
-    search_fields = ('title', 'slug', 'description', 'course', 'unit', 'position', 'is_free')
+    list_filter = ('title', 'description', 'course', 'unit', 'position', 'is_free')
+    search_fields = ('title', 'description', 'course', 'unit', 'position', 'is_free')
     fieldsets = (
         (None, {
             'fields': (
