@@ -1,8 +1,7 @@
 import json
 import os
 
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SOURCE_DIR = 'e:/00自建站课程'
 
 # 定义一个遍历目录结构的函数
 def traverse_dir(path):
@@ -29,8 +28,8 @@ def traverse_dir(path):
   return result
 
 # 使用遍历函数遍历指定目录
-dir_tree = traverse_dir(BASE_DIR)
+dir_tree = traverse_dir(SOURCE_DIR)
 
 # 将遍历结果转换为 JSON 格式并写入文件
-with open('dir_tree.json', 'w') as f:
-  json.dump(dir_tree, f)
+with open('dir_tree.json', 'w', encoding='utf-8') as f:
+  json.dump(dir_tree, f, ensure_ascii=False, indent=2)

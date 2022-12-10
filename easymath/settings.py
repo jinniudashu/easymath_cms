@@ -27,26 +27,12 @@ SECRET_KEY = env('SECRET_KEY')
 
 # Cloudinary settings
 import cloudinary_storage
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': env('CLOUDINARY_API_KEY'),
     'API_SECRET': env('CLOUDINARY_API_SECRET')
 }
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Import the Cloudinary libraries
-# ==============================
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
-
-# cloudinary.config(
-#     cloud_name=env('CLOUDINARY_CLOUD_NAME'),
-#     api_key=env('CLOUDINARY_API_KEY'),
-#     api_secret=env('CLOUDINARY_API_SECRET'),
-#     secure=True
-# )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -154,11 +140,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 if DEBUG:
-    STRIPE_PUBLISHABLE_KEY = ''
-    STRIPE_SECRET_KEY = ''
+    STRIPE_PUBLISHABLE_KEY = env('STRIPE_TEST_PUBLISHABLE_KEY')
+    STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 
 else:
     # live keys
     STRIPE_PUBLISHABLE_KEY = ''
     STRIPE_SECRET_KEY = ''
 
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

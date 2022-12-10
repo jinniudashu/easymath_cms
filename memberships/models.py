@@ -53,7 +53,7 @@ def post_save_usermembership_create(sender, instance, created, *args, **kwargs):
         user_membership.save()
 
 
-post_save.connect(post_save_usermembership_create, sender=settings.AUTH_USER_MODEL)
+# post_save.connect(post_save_usermembership_create, sender=settings.AUTH_USER_MODEL)
 
 
 class Subscription(models.Model):
