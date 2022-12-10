@@ -1,8 +1,6 @@
 import json
 import os
 
-SOURCE_DIR = 'e:/00自建站课程'
-
 # 定义一个遍历目录结构的函数
 def traverse_dir(path):
   # 用于存储遍历结果的列表
@@ -28,6 +26,7 @@ def traverse_dir(path):
   return result
 
 # 使用遍历函数遍历指定目录
+SOURCE_DIR = 'e:/00自建站课程'
 dir_tree = traverse_dir(SOURCE_DIR)
 
 # 将遍历结果转换为 JSON 格式并写入文件
