@@ -49,11 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'courses',
     'memberships',
     'learning_management',
-    'cloudinary',
-    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
