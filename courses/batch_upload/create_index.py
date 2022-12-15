@@ -18,9 +18,14 @@ def traverse_dir(path):
       # 如果是目录，则递归调用本函数
       result.append({item: traverse_dir(full_path)})
     else:
-      # 如果不是目录，则将项目的完整路径添加到结果列表中
-      file_name = os.path.basename(full_path)
-      result.append(file_name)
+      # 如果不是目录，获取文件大小是否小于100M
+      size = os.path.getsize(full_path)
+      if size < 100 * 1024 * 1024:
+        # 如果不是目录，则将项目的完整路径添加到结果列表中
+        file_name = os.path.basename(full_path)
+        result.append(file_name)
+      else:
+        print('文件过大，跳过：', f'{int(size/(1024*1024))}M', full_path, )
   
   # 返回遍历结果
   return result

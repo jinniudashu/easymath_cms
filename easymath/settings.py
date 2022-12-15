@@ -25,14 +25,21 @@ env.read_env(str(BASE_DIR / '.env'))
 
 SECRET_KEY = env('SECRET_KEY')
 
-# Cloudinary settings
-import cloudinary_storage
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': env('CLOUDINARY_API_KEY'),
-    'API_SECRET': env('CLOUDINARY_API_SECRET')
-}
+# Import the Cloudinary libraries
+# ==============================
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# 配置Cloudinary
+config = cloudinary.config(
+    cloud_name=env('CLOUDINARY_CLOUD_NAME'),
+    api_key=env('CLOUDINARY_API_KEY'),
+    api_secret=env('CLOUDINARY_API_SECRET'),
+    secure=True
+)
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,8 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
     'courses',
     'memberships',
     'learning_management',
@@ -148,5 +153,3 @@ else:
     STRIPE_PUBLISHABLE_KEY = 'STRIPE_PUBLISHABLE_KEY'
     STRIPE_SECRET_KEY = 'STRIPE_SECRET_KEY'
 
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

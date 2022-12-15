@@ -1,8 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from cloudinary_storage.storage import VideoMediaCloudinaryStorage
-from cloudinary_storage.validators import validate_video
+from cloudinary.models import CloudinaryField
 
 
 # 获取上传文件的路径
@@ -20,8 +19,7 @@ class Course(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120, verbose_name='课程名称')
     description = models.TextField(null=True, blank=True, verbose_name='课程描述')
-    thumbnail = models.ImageField(upload_to=upload_location, null=True, blank=True, verbose_name='封面图片')
-    # thumbnail = models.FileField(null=True, blank=True, verbose_name='封面图片')
+    thumbnail = CloudinaryField('thumbnail', null=True, blank=True)
     
     class Meta:
         verbose_name = '系列课'
@@ -61,9 +59,8 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, verbose_name='所属课程')
     unit = models.ForeignKey(Unit, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='单元')
     position = models.IntegerField(default=10, verbose_name='视频顺序')
-    video = models.ImageField(upload_to=upload_location, null=True, blank=True, storage=VideoMediaCloudinaryStorage(), validators=[validate_video], verbose_name='视频')
-    # video = models.FileField(upload_to='video', null=True, blank=True, storage=VideoMediaCloudinaryStorage(), validators=[validate_video], verbose_name='视频')
-    thumbnail = models.ImageField(upload_to=upload_location, null=True, blank=True, verbose_name='封面图片')
+    video = CloudinaryField('video', null=True, blank=True)
+    thumbnail = CloudinaryField('thumbnail', null=True, blank=True)
     is_free = models.BooleanField(default=False, verbose_name='免费试看')
 
     class Meta:
@@ -83,8 +80,8 @@ class Exercises(models.Model):
     title = models.CharField(max_length=120, verbose_name='习题名称')
     question = models.TextField(verbose_name='习题描述')
     answer = models.CharField(max_length=120, verbose_name='答案')
-    question_image = models.ImageField(upload_to=upload_location, null=True, blank=True, verbose_name='习题图片')
-    answer_image = models.ImageField(upload_to=upload_location, null=True, blank=True, verbose_name='答案图片')
+    question_image = CloudinaryField('question_image', null=True, blank=True)
+    answer_image = CloudinaryField('answer_image', null=True, blank=True)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='所属视频')
 
     class Meta:
