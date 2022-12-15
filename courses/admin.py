@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Course, Lesson, Unit, Exercises
-from courses.batch_upload.courses_iterator import courses_index
+from courses.batch_upload.batch_upload import batch_upload
 
 
 class InLineLesson(admin.TabularInline):
@@ -24,11 +24,7 @@ class InLineExercises(admin.TabularInline):
 
 class CourseAdmin(admin.ModelAdmin):
     def batch_upload(self, request, queryset):
-        try:
-            print(next(courses_index))
-        except StopIteration:
-            print('Done')
-            
+        batch_upload()
 
     inlines = [InLineLesson]
     list_display = ('title', 'description', 'combine_title_and_slug')
@@ -53,7 +49,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 class UnitAdmin(admin.ModelAdmin):
     inlines = [InLineLesson]
-    list_display = ('title', 'description', 'course')
+    list_display = ('position', 'title', 'description', 'course')
     list_display_links = ('title', 'description')
     list_editable = ('course', )
     list_filter = ('title', 'description', 'course')
@@ -71,9 +67,8 @@ class UnitAdmin(admin.ModelAdmin):
 
 class LessonAdmin(admin.ModelAdmin):
     inlines = [InLineExercises]
-    list_display = ('title', 'description', 'course', 'unit', 'position', 'is_free')
+    list_display = ('course', 'unit', 'position', 'title', 'description', 'is_free')
     list_display_links = ('title', 'description')
-    list_editable = ('course', 'unit', 'position', 'is_free')
     list_filter = ('title', 'description', 'course', 'unit', 'position', 'is_free')
     search_fields = ('title', 'description', 'course', 'unit', 'position', 'is_free')
     fieldsets = (

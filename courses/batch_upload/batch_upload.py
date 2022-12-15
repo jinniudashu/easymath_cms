@@ -1,58 +1,146 @@
 # Import the Cloudinary libraries
 # ==============================
-import cloudinary
+# import cloudinary
+
+# # Import to format the JSON responses
+# # ==============================
+# import json
+
+# from pathlib import Path
+# BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# import environ
+# env = environ.Env()
+# env.read_env(str(BASE_DIR / '.env'))
+
+# # Set configuration parameter: return "https" URLs by setting secure=True  
+# # 配置Cloudinary
+# config = cloudinary.config(
+#     cloud_name=env('CLOUDINARY_CLOUD_NAME'),
+#     api_key=env('CLOUDINARY_API_KEY'),
+#     api_secret=env('CLOUDINARY_API_SECRET'),
+#     secure=True
+# )
+
+
+# # Log the configuration
+# # ==============================
+# print("****1. Set up and configure the SDK:****\nCredentials: ", config.cloud_name, config.api_key, "\n")
+
+
+import json
+import os
+
 import cloudinary.uploader
 import cloudinary.api
 
-# Import to format the JSON responses
-# ==============================
-import json
-
-from pathlib import Path
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-import environ
-env = environ.Env()
-env.read_env(str(BASE_DIR / '.env'))
-
-# Set configuration parameter: return "https" URLs by setting secure=True  
-# 配置Cloudinary
-config = cloudinary.config(
-    cloud_name=env('CLOUDINARY_CLOUD_NAME'),
-    api_key=env('CLOUDINARY_API_KEY'),
-    api_secret=env('CLOUDINARY_API_SECRET'),
-    secure=True
-)
+from courses.models import Course, Unit, Lesson, Exercises
 
 
-# Log the configuration
-# ==============================
-print("****1. Set up and configure the SDK:****\nCredentials: ", config.cloud_name, config.api_key, "\n")
+SOURCE_DIR = 'e:/00自建站课程'
+
+# 从json文件中读取课程目录树，返回一个迭代器
+def get_dir_tree():
+    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dir_tree.json')
+    with open(file_path, 'r', encoding='utf-8') as f:
+        dir_tree_list = json.load(f)
+
+    return dir_tree_list
+
+# 上传课程目录树中的所有文件
+def batch_upload():
+  courses_index = iter(get_dir_tree())
+
+  for course in courses_index:
+    # 获取course的键名和键值
+    course_name, units = course.popitem()
+    print(course_name)
+
+    # 保存课程
+    course = Course.objects.create(title=course_name)
+
+    for unit in units:
+      # 判断item类型是dict还是str
+      if isinstance(unit, dict):
+        unit_name, videos = unit.popitem()
+
+        title=unit_name[4:]
+        position=int(unit_name[0:2])
+
+        # 打印键名
+        print(position, '单元', title)
+
+        # 保存单元
+        unit = Unit.objects.create(title=title, position=position, course=course)
+
+        for video in videos:
+          if isinstance(video, str):
+            path = f'{SOURCE_DIR}/{course_name}/{unit_name}/{video}'
+            if video[-4:] == '.mp4':
+              print('视频', path)
+
+              title=video[3:-4]
+              position=int(video[1:3])
+
+              # 保存视频
+              lesson = Lesson.objects.create(title=title, position=position, unit=unit, course=course)
+
+              # 上传视频
+              uploaded_video = cloudinary.uploader.upload(path, public_id=title, folder=f'{course_name}/{unit_name}', unique_filename = True, overwrite=True)
+
+              # 保存视频URL
+              lesson.video = uploaded_video["url"]
+              lesson.save()
+
+            else:
+              # 上传封面图片
+              print('封面', path)
+              lesson = Lesson.objects.get(title=video[3:-4])
+              uploaded_image = cloudinary.uploader.upload(path, public_id=title, folder=f'{course_name}/{unit_name}', unique_filename = True, overwrite=True)
+
+              # 保存封面URL
+              lesson.thumbnail = uploaded_image["url"]
+              lesson.save()
+
+          else:
+            print('解答视频', video)
+      else:
+        # 构造目录位置
+        path = f'{SOURCE_DIR}/{course_name}/{unit}'
+        print('封面', path)
+
+        # 上传封面图片
+        uploaded_image = cloudinary.uploader.upload(path, public_id=course_name, folder=f'{course_name}', unique_filename = True, overwrite=True)
+
+        # 保存封面URL
+        course.thumbnail = uploaded_image["url"]
 
 
-uploaded_image = cloudinary.uploader.upload("test.jpg", public_id="test", folder="easymath", unique_filename = False, overwrite=True)
 
-# 上传完成后，upload()方法会返回上传文件的详细信息，
-# 包括文件名、文件类型、URL等。例如：
-print(uploaded_image["public_id"])  # 文件名
-print(uploaded_image["format"])     # 文件类型
-print(uploaded_image["url"])        # 文件URL
 
-def uploadImage():
+# uploaded_image = cloudinary.uploader.upload("test.jpg", public_id="test", folder="easymath", unique_filename = False, overwrite=True)
 
-  # Upload the image and get its URL
-  # ==============================
+# # 上传完成后，upload()方法会返回上传文件的详细信息，
+# # 包括文件名、文件类型、URL等。例如：
+# print(uploaded_image["public_id"])  # 文件名
+# print(uploaded_image["format"])     # 文件类型
+# print(uploaded_image["url"])        # 文件URL
 
-  # Upload the image.
-  # Set the asset's public ID and allow overwriting the asset with new versions
-  cloudinary.uploader.upload("https://cloudinary-devs.github.io/cld-docs-assets/assets/images/butterfly.jpeg", public_id="quickstart_butterfly", unique_filename = False, overwrite=True)
+# def uploadImage():
 
-  # Build the URL for the image and save it in the variable 'srcURL'
-  srcURL = cloudinary.CloudinaryImage("quickstart_butterfly").build_url()
+#   # Upload the image and get its URL
+#   # ==============================
 
-  # Log the image URL to the console. 
-  # Copy this URL in a browser tab to generate the image on the fly.
-  print("****2. Upload an image****\nDelivery URL: ", srcURL, "\n")
+#   # Upload the image.
+#   # Set the asset's public ID and allow overwriting the asset with new versions
+#   cloudinary.uploader.upload("https://cloudinary-devs.github.io/cld-docs-assets/assets/images/butterfly.jpeg", public_id="quickstart_butterfly", unique_filename = False, overwrite=True)
+
+#   # Build the URL for the image and save it in the variable 'srcURL'
+#   srcURL = cloudinary.CloudinaryImage("quickstart_butterfly").build_url()
+
+#   # Log the image URL to the console. 
+#   # Copy this URL in a browser tab to generate the image on the fly.
+#   print("****2. Upload an image****\nDelivery URL: ", srcURL, "\n")
 
 
 # ****************************************************************************************************

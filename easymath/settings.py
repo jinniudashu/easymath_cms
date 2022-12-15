@@ -29,8 +29,8 @@ SECRET_KEY = env('SECRET_KEY')
 # Import the Cloudinary libraries
 # ==============================
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+# import cloudinary.uploader
+# import cloudinary.api
 
 # 配置Cloudinary
 config = cloudinary.config(

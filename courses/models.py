@@ -46,6 +46,7 @@ class Unit(models.Model):
     class Meta:
         verbose_name = '课程单元'
         verbose_name_plural = verbose_name
+        ordering = ['course', 'position']
 
     def __str__(self):
         return self.title
@@ -56,7 +57,7 @@ class Lesson(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120, verbose_name='视频名称')
     description = models.TextField(null=True, blank=True, verbose_name='视频描述')
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, verbose_name='所属课程')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, verbose_name='所属课程')
     unit = models.ForeignKey(Unit, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='单元')
     position = models.IntegerField(default=10, verbose_name='视频顺序')
     video = CloudinaryField('video', null=True, blank=True)
@@ -66,6 +67,7 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = '视频'
         verbose_name_plural = verbose_name
+        ordering = ['course', 'unit', 'position']
 
     def __str__(self):
         return self.title
