@@ -72,8 +72,21 @@ def batch_upload():
               lesson.thumbnail = uploaded_image['url']
               lesson.save()
 
-          else:
+          elif isinstance(video, dict):
             print('解答视频', video)
+            _name, videos_additional = video.popitem()
+            path = f'{SOURCE_DIR}/{course_name}/{unit_name}/{_name}'
+            for video_additional in videos_additional:
+                position = int(video_additional[1:3])
+                lesson = Lesson.objects.get(position=position, unit=unit, course=course)
+
+                # 上传视频
+                uploaded_video = cloudinary.uploader.upload(f'{path}/{video_additional}', folder=f'easymath/{course_name}/{unit_name}/{_name}', unique_filename = True, overwrite=True, resource_type="video")
+                
+                # 保存视频URL
+                lesson.video_additional = uploaded_video['url']
+                lesson.save()
+
       else:
         # 构造目录位置
         path = f'{SOURCE_DIR}/{course_name}/{unit}'
@@ -88,27 +101,12 @@ def batch_upload():
 
 
 
-# # 上传完成后，upload()方法会返回上传文件的详细信息，
-# # 包括文件名、文件类型、URL等。例如：
-# print(uploaded_image["public_id"])  # 文件名
-# print(uploaded_image["format"])     # 文件类型
-# print(uploaded_image["url"])        # 文件URL
-
-# def uploadImage():
-
-#   # Upload the image and get its URL
-#   # ==============================
-
 #   # Upload the image.
 #   # Set the asset's public ID and allow overwriting the asset with new versions
 #   cloudinary.uploader.upload("https://cloudinary-devs.github.io/cld-docs-assets/assets/images/butterfly.jpeg", public_id="quickstart_butterfly", unique_filename = False, overwrite=True)
 
 #   # Build the URL for the image and save it in the variable 'srcURL'
 #   srcURL = cloudinary.CloudinaryImage("quickstart_butterfly").build_url()
-
-#   # Log the image URL to the console. 
-#   # Copy this URL in a browser tab to generate the image on the fly.
-#   print("****2. Upload an image****\nDelivery URL: ", srcURL, "\n")
 
 
 # ****************************************************************************************************

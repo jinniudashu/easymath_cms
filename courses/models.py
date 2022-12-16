@@ -4,16 +4,6 @@ from django.urls import reverse
 from cloudinary.models import CloudinaryField
 
 
-# 获取上传文件的路径
-def upload_location(instance, filename):
-    ROOT_DIR = 'easymath'
-    if isinstance(instance, Course):
-        return f'{ROOT_DIR}/{instance.title}/'
-    elif isinstance(instance, Lesson):
-        return f'{ROOT_DIR}/{instance.course.title}/{instance.unit.title}/'
-    elif isinstance(instance, Exercises):
-        return f'{ROOT_DIR}/{instance.lesson.course.title}/{instance.lesson.unit.title}/'
-
 # 系列课
 class Course(models.Model):
     slug = models.SlugField()
@@ -61,6 +51,7 @@ class Lesson(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='单元')
     position = models.IntegerField(default=10, verbose_name='视频顺序')
     video = CloudinaryField('video', null=True, blank=True)
+    video_additional = CloudinaryField('video_additional', null=True, blank=True)
     thumbnail = CloudinaryField('thumbnail', null=True, blank=True)
     is_free = models.BooleanField(default=False, verbose_name='免费试看')
 
