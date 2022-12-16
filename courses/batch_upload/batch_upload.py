@@ -1,33 +1,3 @@
-# Import the Cloudinary libraries
-# ==============================
-# import cloudinary
-
-# # Import to format the JSON responses
-# # ==============================
-# import json
-
-# from pathlib import Path
-# BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-# import environ
-# env = environ.Env()
-# env.read_env(str(BASE_DIR / '.env'))
-
-# # Set configuration parameter: return "https" URLs by setting secure=True  
-# # 配置Cloudinary
-# config = cloudinary.config(
-#     cloud_name=env('CLOUDINARY_CLOUD_NAME'),
-#     api_key=env('CLOUDINARY_API_KEY'),
-#     api_secret=env('CLOUDINARY_API_SECRET'),
-#     secure=True
-# )
-
-
-# # Log the configuration
-# # ==============================
-# print("****1. Set up and configure the SDK:****\nCredentials: ", config.cloud_name, config.api_key, "\n")
-
-
 import json
 import os
 
@@ -36,8 +6,6 @@ import cloudinary.api
 
 from courses.models import Course, Unit, Lesson, Exercises
 
-
-SOURCE_DIR = 'e:/00自建站课程'
 
 # 从json文件中读取课程目录树，返回一个迭代器
 def get_dir_tree():
@@ -49,6 +17,8 @@ def get_dir_tree():
 
 # 上传课程目录树中的所有文件
 def batch_upload():
+
+  SOURCE_DIR = 'e:/00自建站课程'
   courses_index = iter(get_dir_tree())
 
   for course in courses_index:
@@ -86,20 +56,20 @@ def batch_upload():
               lesson = Lesson.objects.create(title=title, position=position, unit=unit, course=course)
 
               # 上传视频
-              uploaded_video = cloudinary.uploader.upload(path, public_id=title, folder=f'{course_name}/{unit_name}', unique_filename = True, overwrite=True)
+              uploaded_video = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True, resource_type="video")
 
               # 保存视频URL
-              lesson.video = uploaded_video["url"]
+              lesson.video = uploaded_video['url']
               lesson.save()
 
             else:
               # 上传封面图片
               print('封面', path)
               lesson = Lesson.objects.get(title=video[3:-4])
-              uploaded_image = cloudinary.uploader.upload(path, public_id=title, folder=f'{course_name}/{unit_name}', unique_filename = True, overwrite=True)
+              uploaded_image = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True)
 
               # 保存封面URL
-              lesson.thumbnail = uploaded_image["url"]
+              lesson.thumbnail = uploaded_image['url']
               lesson.save()
 
           else:
@@ -110,15 +80,13 @@ def batch_upload():
         print('封面', path)
 
         # 上传封面图片
-        uploaded_image = cloudinary.uploader.upload(path, public_id=course_name, folder=f'{course_name}', unique_filename = True, overwrite=True)
+        uploaded_image = cloudinary.uploader.upload(path, public_id=course_name, folder=f'easymath/{course_name}', unique_filename = True, overwrite=True)
 
         # 保存封面URL
-        course.thumbnail = uploaded_image["url"]
+        course.thumbnail = uploaded_image['url']
+        course.save()
 
 
-
-
-# uploaded_image = cloudinary.uploader.upload("test.jpg", public_id="test", folder="easymath", unique_filename = False, overwrite=True)
 
 # # 上传完成后，upload()方法会返回上传文件的详细信息，
 # # 包括文件名、文件类型、URL等。例如：
