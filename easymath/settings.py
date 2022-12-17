@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'courses',
     'memberships',
     'learning_management',
+    'backup',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +78,9 @@ ROOT_URLCONF = 'easymath.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,9 +129,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -144,6 +148,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Stripe
 if DEBUG:
     STRIPE_PUBLISHABLE_KEY = env('STRIPE_TEST_PUBLISHABLE_KEY')
     STRIPE_SECRET_KEY = env('STRIPE_TEST_SECRET_KEY')

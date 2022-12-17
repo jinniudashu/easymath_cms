@@ -3,9 +3,11 @@ from django.urls import reverse
 
 from cloudinary.models import CloudinaryField
 
+from easymath.easymathbase_class import EasyMathBase
+
 
 # 系列课
-class Course(models.Model):
+class Course(EasyMathBase):
     slug = models.SlugField()
     title = models.CharField(max_length=120, verbose_name='课程名称')
     description = models.TextField(null=True, blank=True, verbose_name='课程描述')
@@ -27,11 +29,11 @@ class Course(models.Model):
 
 
 # 课程单元
-class Unit(models.Model):
+class Unit(EasyMathBase):
     position = models.IntegerField(default=10, verbose_name='单元顺序')
     title = models.CharField(max_length=120, verbose_name='单元名称')
     description = models.TextField(null=True, blank=True, verbose_name='单元描述')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,  verbose_name='所属课程')
 
     class Meta:
         verbose_name = '课程单元'
@@ -43,7 +45,7 @@ class Unit(models.Model):
 
 
 # 视频课
-class Lesson(models.Model):
+class Lesson(EasyMathBase):
     slug = models.SlugField()
     title = models.CharField(max_length=120, verbose_name='视频名称')
     description = models.TextField(null=True, blank=True, verbose_name='视频描述')
@@ -68,7 +70,7 @@ class Lesson(models.Model):
 
 
 # 习题
-class Exercises(models.Model):
+class Exercises(EasyMathBase):
     position = models.IntegerField(default=10, verbose_name='习题顺序')
     title = models.CharField(max_length=120, verbose_name='习题名称')
     question = models.TextField(verbose_name='习题描述')

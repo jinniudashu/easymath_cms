@@ -49,7 +49,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 class UnitAdmin(admin.ModelAdmin):
     inlines = [InLineLesson]
-    list_display = ('position', 'title', 'description', 'course')
+    list_display = ('course', 'position', 'title', 'description')
     list_display_links = ('title', 'description')
     list_editable = ('course', )
     list_filter = ('title', 'description', 'course')
@@ -82,6 +82,7 @@ class LessonAdmin(admin.ModelAdmin):
                 'unit',
                 'position',
                 'video',
+                'video_additional',
                 'is_free',
             )
         }),
