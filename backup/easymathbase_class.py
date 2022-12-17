@@ -26,8 +26,7 @@ class EasyMathBackupManager(models.Manager):
                     elif field.__class__.__name__ == 'DurationField':  # duration字段
                         item_dict[field.name] = str(item_dict[field.name])
                     elif field.__class__.__name__ == 'CloudinaryField':
-                        item_dict[field.name] = item_dict[field.name].url
-                        print('CloudinaryField', '这里报错！', field.name, item_dict[field.name].url)
+                        item_dict[field.name] = str(item_dict[field.name])
 
 
             # 遍历模型多对多字段，用easymath_id替换外键id

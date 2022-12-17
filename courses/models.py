@@ -3,11 +3,9 @@ from django.urls import reverse
 
 from cloudinary.models import CloudinaryField
 
-from easymath.easymathbase_class import EasyMathBase
-
 
 # 系列课
-class Course(EasyMathBase):
+class Course(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120, verbose_name='课程名称')
     description = models.TextField(null=True, blank=True, verbose_name='课程描述')
@@ -29,7 +27,7 @@ class Course(EasyMathBase):
 
 
 # 课程单元
-class Unit(EasyMathBase):
+class Unit(models.Model):
     position = models.IntegerField(default=10, verbose_name='单元顺序')
     title = models.CharField(max_length=120, verbose_name='单元名称')
     description = models.TextField(null=True, blank=True, verbose_name='单元描述')
@@ -45,7 +43,7 @@ class Unit(EasyMathBase):
 
 
 # 视频课
-class Lesson(EasyMathBase):
+class Lesson(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120, verbose_name='视频名称')
     description = models.TextField(null=True, blank=True, verbose_name='视频描述')
@@ -70,7 +68,7 @@ class Lesson(EasyMathBase):
 
 
 # 习题
-class Exercises(EasyMathBase):
+class Exercises(models.Model):
     position = models.IntegerField(default=10, verbose_name='习题顺序')
     title = models.CharField(max_length=120, verbose_name='习题名称')
     question = models.TextField(verbose_name='习题描述')

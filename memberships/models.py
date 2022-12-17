@@ -3,8 +3,6 @@ from django.db.models.signals import post_save
 
 from datetime import datetime
 
-from easymath.easymathbase_class import EasyMathBase
-
 import stripe
 from django.conf import settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -18,7 +16,7 @@ MEMBERSHIP_CHOICES = (
 )
 
 
-class Membership(EasyMathBase):
+class Membership(models.Model):
     slug = models.SlugField()
     membership_type = models.CharField(choices=MEMBERSHIP_CHOICES, default='Free', max_length=30, verbose_name='会员类型')
     price = models.IntegerField(default=15, verbose_name='价格')
@@ -32,7 +30,7 @@ class Membership(EasyMathBase):
         return self.membership_type
 
 
-class UserMembership(EasyMathBase):
+class UserMembership(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='用户')
     stripe_customer_id = models.CharField(max_length=40, verbose_name='Stripe Customer ID')
     membership = models.ForeignKey(Membership, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='会员类型')
@@ -59,7 +57,7 @@ def post_save_usermembership_create(sender, instance, created, *args, **kwargs):
 # post_save.connect(post_save_usermembership_create, sender=settings.AUTH_USER_MODEL)
 
 
-class Subscription(EasyMathBase):
+class Subscription(models.Model):
     user_membership = models.ForeignKey(UserMembership, on_delete=models.CASCADE, verbose_name='会员用户')
     stripe_subscription_id = models.CharField(max_length=40, verbose_name='Stripe Subscription ID')
     active = models.BooleanField(default=True, verbose_name='有效期内')
