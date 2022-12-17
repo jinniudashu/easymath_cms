@@ -1,1 +1,1 @@
-web: gunicorn easymath.wsgi --log-file -
+web: gunicorn easymath.wsgi
