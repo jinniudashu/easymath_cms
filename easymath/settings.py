@@ -12,7 +12,8 @@ import environ
 env = environ.Env()
 env.read_env(str(BASE_DIR / '.env'))
 
-SECRET_KEY = env('SECRET_KEY')
+# 从系统环境变量中读取SECRET_KEY，如果没有则从.env文件中读取
+SECRET_KEY = os.environ.get('SECRET_KEY', env('SECRET_KEY'))
 
 
 # Import the Cloudinary libraries
@@ -23,9 +24,9 @@ import cloudinary
 
 # 配置Cloudinary
 config = cloudinary.config(
-    cloud_name=env('CLOUDINARY_CLOUD_NAME'),
-    api_key=env('CLOUDINARY_API_KEY'),
-    api_secret=env('CLOUDINARY_API_SECRET'),
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', env('CLOUDINARY_CLOUD_NAME')),
+    api_key=os.environ.get('CLOUDINARY_API_KEY', env('CLOUDINARY_API_KEY')),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET', env('CLOUDINARY_API_SECRET')),
     secure=True
 )
 
@@ -96,30 +97,16 @@ WSGI_APPLICATION = 'easymath.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('PGDATABASE'),
-#         'USER': env('PGUSER'),
-#         'PASSWORD': env('PGPASSWORD'),
-#         'HOST': env('PGHOST'),
-#         'PORT': env('PGPORT'),
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ["PGDATABASE"],
-        'USER': os.environ["PGUSER"],
-        'PASSWORD': os.environ["PGPASSWORD"],
-        'HOST': os.environ["PGHOST"],
-        'PORT': os.environ["PGPORT"],
+        'NAME': os.environ.get('PGDATABASE', env('PGDATABASE')),
+        'USER': os.environ.get('PGUSER', env('PGUSER')),
+        'PASSWORD': os.environ.get('PGPASSWORD', env('PGPASSWORD')),
+        'HOST': os.environ.get('PGHOST', env('PGHOST')),
+        'PORT': os.environ.get('PGPORT', env('PGPORT')),
     }
 }
-
-
-# DATABASES = {'default': env('DATABASE_URL')}
 
 
 # Password validation
@@ -171,13 +158,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Stripe
 if DEBUG:
-    STRIPE_PUBLISHABLE_KEY = env('STRIPE_TEST_PUBLISHABLE_KEY')
-    STRIPE_SECRET_KEY = env('STRIPE_TEST_SECRET_KEY')
-
+    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_TEST_PUBLISHABLE_KEY', env('STRIPE_TEST_PUBLISHABLE_KEY'))
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY', env('STRIPE_TEST_SECRET_KEY'))
 else:
     # live keys
-    STRIPE_PUBLISHABLE_KEY = 'STRIPE_PUBLISHABLE_KEY'
-    STRIPE_SECRET_KEY = 'STRIPE_SECRET_KEY'
+    STRIPE_PUBLISHABLE_KEY = os.environ['STRIPE_PUBLISHABLE_KEY']
+    STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
