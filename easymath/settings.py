@@ -32,10 +32,12 @@ config = cloudinary.config(
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["web-production-2dfb.up.railway.app",]
+ALLOWED_HOSTS = ["*"]
 
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['https://web-production-2dfb.up.railway.app']
 
 # Application definition
 
