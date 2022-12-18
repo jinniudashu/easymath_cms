@@ -96,16 +96,28 @@ WSGI_APPLICATION = 'easymath.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('PGDATABASE'),
+#         'USER': env('PGUSER'),
+#         'PASSWORD': env('PGPASSWORD'),
+#         'HOST': env('PGHOST'),
+#         'PORT': env('PGPORT'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('PGDATABASE'),
-        'USER': env('PGUSER'),
-        'PASSWORD': env('PGPASSWORD'),
-        'HOST': env('PGHOST'),
-        'PORT': env('PGPORT'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ["PGDATABASE"],
+        'USER': os.environ["PGUSER"],
+        'PASSWORD': os.environ["PGPASSWORD"],
+        'HOST': os.environ["PGHOST"],
+        'PORT': os.environ["PGPORT"],
     }
 }
+
 
 # DATABASES = {'default': env('DATABASE_URL')}
 
