@@ -34,7 +34,7 @@ config = cloudinary.config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["web-production-2dfb.up.railway.app",]
 
 
 # Application definition
