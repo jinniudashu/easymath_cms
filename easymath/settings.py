@@ -19,8 +19,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY', env('SECRET_KEY'))
 # Import the Cloudinary libraries
 # ==============================
 import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
 
 # 配置Cloudinary
 config = cloudinary.config(
@@ -32,7 +30,7 @@ config = cloudinary.config(
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -145,12 +143,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'staticfiles/'
+STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'staticfiles'),
 ]
 
 # Default primary key field type

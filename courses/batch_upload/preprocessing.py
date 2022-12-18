@@ -9,7 +9,9 @@ def traverse_dir(path):
   
   # 列出当前目录中的所有文件和子目录
   items = os.listdir(path)
-  
+
+  count = 0
+
   # 遍历所有的项目
   for item in items:
     # 获取项目的完整路径
@@ -19,23 +21,18 @@ def traverse_dir(path):
     if os.path.isdir(full_path):
       # 如果是目录，则递归调用本函数
       result.append({item: traverse_dir(full_path)})
-    else:      
-      # 判断文件大小是否小于100M
-      size = os.path.getsize(full_path)
-      if size < 100 * 1024 * 1024:
-        # 如果不是目录，则将项目的完整路径添加到结果列表中
-        file_name = os.path.basename(full_path)
-        result.append(file_name)
-      else:
-        print('文件过大，跳过：', f'{int(size/(1024*1024))}M', full_path, )
+    else:
+      # 如果文件是.jpg或.JPG后缀名的图片，则转换为.png格式，删除原来的图片, print出来
+        if item.endswith('.jpg') or item.endswith('.JPG'):
+            print(count, full_path)
+            count += 1
+            # 转换为png格式
+            im = Image.open(full_path)
+            im.save(full_path[:-3] + 'png')
+            # 删除原来的图片
+            os.remove(full_path)
   
-  # 返回遍历结果
-  return result
 
 # 使用遍历函数遍历指定目录
 SOURCE_DIR = 'e:/00自建站课程'
 dir_tree = traverse_dir(SOURCE_DIR)
-
-# 将遍历结果转换为 JSON 格式并写入文件
-with open('dir_tree.json', 'w', encoding='utf-8') as f:
-  json.dump(dir_tree, f, ensure_ascii=False, indent=2)

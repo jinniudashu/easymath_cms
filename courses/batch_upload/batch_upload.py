@@ -56,27 +56,37 @@ def batch_upload():
               lesson = Lesson.objects.create(title=title, position=position, unit=unit, course=course)
 
               # 上传视频
-              uploaded_video = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True, resource_type="video")
+              try:
+                uploaded_video = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True, resource_type="video")
+                # 保存视频URL
+                lesson.video = uploaded_video['url']
+                lesson.save()
+              except cloudinary.exceptions.Error:
+                print('视频', path, '上传失败')
 
-              # 保存视频URL
-              lesson.video = uploaded_video['url']
-              lesson.save()
 
             else:
               # 上传封面图片
               print('封面', path)
-              lesson = Lesson.objects.get(title=video[3:-4])
-              uploaded_image = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True)
+              try:
+                lesson = Lesson.objects.get(title=video[3:-4], course=course)
+                uploaded_image = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True)
 
-              # 保存封面URL
-              lesson.thumbnail = uploaded_image['url']
-              lesson.save()
+                # 保存封面URL
+                lesson.thumbnail = uploaded_image['url']
+                lesson.save()
+              except Lesson.DoesNotExist:
+                print('视频封面', path, '不存在')
+              except cloudinary.exceptions.Error:
+                print('视频封面', path, '上传失败')
+
 
           elif isinstance(video, dict):
             print('解答视频', video)
             _name, videos_additional = video.popitem()
             path = f'{SOURCE_DIR}/{course_name}/{unit_name}/{_name}'
             for video_additional in videos_additional:
+              try:
                 position = int(video_additional[1:3])
                 lesson = Lesson.objects.get(position=position, unit=unit, course=course)
 
@@ -86,6 +96,10 @@ def batch_upload():
                 # 保存视频URL
                 lesson.video_additional = uploaded_video['url']
                 lesson.save()
+              except Lesson.DoesNotExist:
+                print('解答视频', video_additional, '不存在')
+              except cloudinary.exceptions.Error:
+                print('解答视频', video_additional, '上传失败')
 
       else:
         # 构造目录位置
@@ -93,11 +107,14 @@ def batch_upload():
         print('封面', path)
 
         # 上传封面图片
-        uploaded_image = cloudinary.uploader.upload(path, public_id=course_name, folder=f'easymath/{course_name}', unique_filename = True, overwrite=True)
+        try:
+          uploaded_image = cloudinary.uploader.upload(path, public_id=course_name, folder=f'easymath/{course_name}', unique_filename = True, overwrite=True)
+          # 保存封面URL
+          course.thumbnail = uploaded_image['url']
+          course.save()
+        except cloudinary.exceptions.Error:
+          print('课程封面', path, '上传失败')
 
-        # 保存封面URL
-        course.thumbnail = uploaded_image['url']
-        course.save()
 
 
 
