@@ -27,7 +27,7 @@ config = cloudinary.config(
 # Application definition
 
 INSTALLED_APPS = [
-    'django_crontab',
+    # 'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -98,23 +98,23 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = []
     
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get('PGDATABASE', env('PGDATABASE')),
-            'USER': os.environ.get('PGUSER', env('PGUSER')),
-            'PASSWORD': os.environ.get('PGPASSWORD', env('PGPASSWORD')),
-            'HOST': os.environ.get('PGHOST', env('PGHOST')),
-            'PORT': os.environ.get('PGPORT', env('PGPORT')),
-        }
-    }
-
     # DATABASES = {
     #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': BASE_DIR / 'db.sqlite3',
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': os.environ.get('PGDATABASE', env('PGDATABASE')),
+    #         'USER': os.environ.get('PGUSER', env('PGUSER')),
+    #         'PASSWORD': os.environ.get('PGPASSWORD', env('PGPASSWORD')),
+    #         'HOST': os.environ.get('PGHOST', env('PGHOST')),
+    #         'PORT': os.environ.get('PGPORT', env('PGPORT')),
     #     }
     # }
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -162,6 +162,7 @@ STATICFILES_DIRS = []
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 # Stripe
 if DEBUG:
     STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_TEST_PUBLISHABLE_KEY', env('STRIPE_TEST_PUBLISHABLE_KEY'))
@@ -171,19 +172,13 @@ else:
     STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', env('STRIPE_PUBLISHABLE_KEY'))
     STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', env('STRIPE_SECRET_KEY'))
 
+
+# DBBACKUP
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
 
 # 周期任务
-CRONJOBS = [
-    # 每1分钟备份数据
-    ('*/1 * * * *', 'easymath.cron.backup_data_scheduled_job')
-]
-
-
-# from django.core.management import call_command
-# if os.environ.get('PRODUCTION') == 'True':
-#     try:
-#         call_command('dbrestore')
-#     except:
-#         print('dbrestore failed:', Exception)
+# CRONJOBS = [
+#     # 每1分钟备份数据
+#     ('*/1 * * * *', 'easymath.cron.backup_data_scheduled_job')
+# ]
