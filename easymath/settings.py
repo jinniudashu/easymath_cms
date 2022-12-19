@@ -170,9 +170,9 @@ CRONJOBS = [
 ]
 
 
+from django.core.management import call_command
 if os.environ.get('PRODUCTION') == 'True':
-    from django.core.management import call_command
     try:
         call_command('dbrestore')
     except:
-        print('dbrestore failed')
+        print('dbrestore failed:', Exception)
