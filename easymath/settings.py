@@ -168,3 +168,11 @@ CRONJOBS = [
     # 每1分钟备份数据
     ('*/1 * * * *', 'easymath.cron.backup_data_scheduled_job')
 ]
+
+
+if os.environ.get('PRODUCTION') == 'True':
+    from django.core.management import call_command
+    try:
+        call_command('dbrestore')
+    except:
+        print('dbrestore failed')
