@@ -24,16 +24,6 @@ config = cloudinary.config(
     secure=True
 )
 
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
-
-if not DEBUG:
-    CSRF_TRUSTED_ORIGINS = ['https://web-production-2dfb.up.railway.app']
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -87,23 +77,35 @@ WSGI_APPLICATION = 'easymath.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('PGDATABASE', env('PGDATABASE')),
-        'USER': os.environ.get('PGUSER', env('PGUSER')),
-        'PASSWORD': os.environ.get('PGPASSWORD', env('PGPASSWORD')),
-        'HOST': os.environ.get('PGHOST', env('PGHOST')),
-        'PORT': os.environ.get('PGPORT', env('PGPORT')),
+# SECURITY WARNING: don't run with debug turned on in production!
+if os.environ.get('PRODUCTION') == 'True':
+    DEBUG = False
+    ALLOWED_HOSTS = ['*']
+    
+    CSRF_TRUSTED_ORIGINS = ['https://web-production-2dfb.up.railway.app']
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get('PGDATABASE', env('PGDATABASE')),
+            'USER': os.environ.get('PGUSER', env('PGUSER')),
+            'PASSWORD': os.environ.get('PGPASSWORD', env('PGPASSWORD')),
+            'HOST': os.environ.get('PGHOST', env('PGHOST')),
+            'PORT': os.environ.get('PGPORT', env('PGPORT')),
+        }
     }
-}
+
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = []
+    
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -144,9 +146,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),
-]
+STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
