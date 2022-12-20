@@ -60,6 +60,7 @@ def batch_upload():
                 uploaded_video = cloudinary.uploader.upload(path, public_id=title, folder=f'easymath/{course_name}/{unit_name}', unique_filename = True, overwrite=True, resource_type="video")
                 # 保存视频URL
                 lesson.video = uploaded_video['url']
+                print("save video:", uploaded_video['url'])
                 lesson.save()
               except cloudinary.exceptions.Error:
                 print('视频', path, '上传失败')
