@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'easymath.wsgi.application'
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('PRODUCTION') == 'True':
     DEBUG = False
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['web-production-2275.up.railway.app']
     
-    CSRF_TRUSTED_ORIGINS = ['https://web-production-2dfb.up.railway.app']
+    CSRF_TRUSTED_ORIGINS = ['https://web-production-2275.up.railway.app']
 
     DATABASES = {
         'default': {
