@@ -22,6 +22,10 @@ class Course(models.Model):
         return reverse('courses:detail', kwargs={'slug': self.slug})
 
     @property
+    def units(self):
+        return self.unit_set.all().order_by('position')
+
+    @property
     def lessons(self):
         return self.lesson_set.all().order_by('position')
 
@@ -41,6 +45,9 @@ class Unit(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def lessons(self):
+        return self.lesson_set.all().order_by('position')
 
 # 视频课
 class Lesson(models.Model):
