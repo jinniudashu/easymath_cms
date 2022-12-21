@@ -68,7 +68,7 @@ class Lesson(models.Model):
 
 
 # 习题
-class Exercises(models.Model):
+class Exercise(models.Model):
     position = models.IntegerField(default=10, verbose_name='习题顺序')
     title = models.CharField(max_length=120, verbose_name='习题名称')
     question = models.TextField(verbose_name='习题描述')

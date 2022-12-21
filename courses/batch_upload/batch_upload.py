@@ -4,7 +4,7 @@ import os
 import cloudinary.uploader
 import cloudinary.api
 
-from courses.models import Course, Unit, Lesson, Exercises
+from courses.models import Course, Unit, Lesson, Exercise
 
 
 # 从json文件中读取课程目录树，返回一个迭代器

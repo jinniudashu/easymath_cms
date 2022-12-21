@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Lesson, Unit, Exercises
+from .models import Course, Lesson, Unit, Exercise
 from courses.batch_upload.batch_upload import batch_upload
 
 
@@ -16,8 +16,8 @@ class InLineUnits(admin.TabularInline):
     max_num = 3
 
 
-class InLineExercises(admin.TabularInline):
-    model = Exercises
+class InLineExercise(admin.TabularInline):
+    model = Exercise
     extra = 1
     max_num = 3
 
@@ -66,7 +66,7 @@ class UnitAdmin(admin.ModelAdmin):
 
 
 class LessonAdmin(admin.ModelAdmin):
-    inlines = [InLineExercises]
+    inlines = [InLineExercise]
     list_display = ('course', 'unit', 'position', 'title', 'description', 'is_free')
     list_display_links = ('title', 'description')
     list_filter = ('title', 'description', 'course', 'unit', 'position', 'is_free')
@@ -91,4 +91,4 @@ class LessonAdmin(admin.ModelAdmin):
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Lesson, LessonAdmin)
-admin.site.register(Exercises)
+admin.site.register(Exercise)
