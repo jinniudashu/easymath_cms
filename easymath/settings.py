@@ -34,11 +34,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'whitenoise.runserver_nostatic',
     'courses',
     'memberships',
     'learning_management',
-    'rest_framework',
     'dbbackup',  # django-dbbackup
 ]
 
@@ -96,6 +96,10 @@ if os.environ.get('PRODUCTION') == 'True':
         }
     }
 
+    # Stripe
+    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', env('STRIPE_PUBLISHABLE_KEY'))
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', env('STRIPE_SECRET_KEY'))
+
 else:
     DEBUG = True
     ALLOWED_HOSTS = []
@@ -117,6 +121,10 @@ else:
     #         'NAME': BASE_DIR / 'db.sqlite3',
     #     }
     # }
+
+    # Stripe
+    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_TEST_PUBLISHABLE_KEY', env('STRIPE_TEST_PUBLISHABLE_KEY'))
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY', env('STRIPE_TEST_SECRET_KEY'))
 
 
 # Password validation
@@ -165,16 +173,6 @@ STATICFILES_DIRS = []
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Stripe
-if DEBUG:
-    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_TEST_PUBLISHABLE_KEY', env('STRIPE_TEST_PUBLISHABLE_KEY'))
-    STRIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY', env('STRIPE_TEST_SECRET_KEY'))
-else:
-    # live keys
-    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', env('STRIPE_PUBLISHABLE_KEY'))
-    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', env('STRIPE_SECRET_KEY'))
 
 
 # DBBACKUP
