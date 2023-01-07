@@ -77,11 +77,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'easymath.wsgi.application'
 
 # 添加 CORS 配置
-# CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173', 
-    'https://easymath.vercel.app'
-]
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173', 
+#     'https://easymath.vercel.app'
+# ]
 # CORS_ALLOW_CREDENTIALS = True
  
 CORS_ALLOW_METHODS = (
