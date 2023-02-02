@@ -45,7 +45,7 @@ def courses_list(request):
     # # thumbnail序列化值去掉开头的‘image/upload/’
     # serializer_data = remove_thumbnail_prefix(serializer.data)
 
-    return Response(serializer_data)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -62,10 +62,10 @@ def lessons_list(request, pk):
     lessons_list = Lesson.objects.filter(course=pk)
     serializer = LessonSerializer(lessons_list, many=True)
 
-    # thumbnail序列化值去掉开头的‘image/upload/’
-    serializer_data = remove_thumbnail_prefix(serializer.data)
+    # # thumbnail序列化值去掉开头的‘image/upload/’
+    # serializer_data = remove_thumbnail_prefix(serializer.data)
 
-    return Response(serializer_data)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -74,10 +74,10 @@ def unit_lessons_list(request, cpk, upk):
     lessons_list = Lesson.objects.filter(course=cpk, unit=upk)
     serializer = LessonSerializer(lessons_list, many=True)
 
-    # thumbnail序列化值去掉开头的‘image/upload/’
-    serializer_data = remove_thumbnail_prefix(serializer.data)
+    # # thumbnail序列化值去掉开头的‘image/upload/’
+    # serializer_data = remove_thumbnail_prefix(serializer.data)
 
-    return Response(serializer_data)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -86,10 +86,10 @@ def lesson_detail(request, pk):
     lesson = Lesson.objects.get(id=pk)
     serializer = LessonSerializer(lesson, many=False)
 
-    # thumbnail序列化值去掉开头的‘image/upload/’
-    serializer_data = remove_thumbnail_prefix([serializer.data])
+    # # thumbnail序列化值去掉开头的‘image/upload/’
+    # serializer_data = remove_thumbnail_prefix([serializer.data])
 
-    return Response(serializer_data[0])
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
