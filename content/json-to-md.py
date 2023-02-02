@@ -73,7 +73,7 @@ for course in courses:
             del lesson["unit"]
             
             # Write the course data as front matter in a Markdown file
-            with open(f"{unit_name}/{lesson.get('title')}.md", "w") as file:
+            with open(f"{unit_name}/{lesson.get('title')}.md", "w", encoding="utf-8") as file:
                 file.write("---\n")
                 for key in lesson:
                     file.write(f"{key}: {lesson[key]}\n")
