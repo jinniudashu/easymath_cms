@@ -28,12 +28,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# 去除thumbnail字段开头的‘image/upload/’前缀
-def remove_thumbnail_prefix(serializer_data):
-    for i in range(len(serializer_data)):
-        if serializer_data[i]['thumbnail']:
-            serializer_data[i]['thumbnail'] = serializer_data[i]['thumbnail'][13:]
-    return serializer_data
+# # 去除thumbnail字段开头的‘image/upload/’前缀
+# def remove_thumbnail_prefix(serializer_data):
+#     for i in range(len(serializer_data)):
+#         if serializer_data[i]['thumbnail']:
+#             serializer_data[i]['thumbnail'] = serializer_data[i]['thumbnail'][13:]
+#     return serializer_data
 
 
 @api_view(['GET'])
@@ -42,8 +42,8 @@ def courses_list(request):
     courses_list = Course.objects.all()
     serializer = CourseSerializer(courses_list, many=True)
 
-    # thumbnail序列化值去掉开头的‘image/upload/’
-    serializer_data = remove_thumbnail_prefix(serializer.data)
+    # # thumbnail序列化值去掉开头的‘image/upload/’
+    # serializer_data = remove_thumbnail_prefix(serializer.data)
 
     return Response(serializer_data)
 
