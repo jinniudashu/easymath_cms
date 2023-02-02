@@ -48,9 +48,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -76,36 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'easymath.wsgi.application'
 
-# 添加 CORS 配置
-CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:5173', 
-#     'https://easymath.vercel.app'
-# ]
-# CORS_ALLOW_CREDENTIALS = True
- 
-CORS_ALLOW_METHODS = (
-  'DELETE',
-  'GET',
-  'OPTIONS',
-  'PATCH',
-  'POST',
-  'PUT',
-  'VIEW',
-)
- 
-CORS_ALLOW_HEADERS = (
-  'XMLHttpRequest',
-  'X_FILENAME',
-  'accept-encoding',
-  'authorization',
-  'content-type',
-  'dnt',
-  'origin',
-  'user-agent',
-  'x-csrftoken',
-  'x-requested-with',
-)
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -114,7 +84,7 @@ CORS_ALLOW_HEADERS = (
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('PRODUCTION') == 'True':
     DEBUG = False
-    ALLOWED_HOSTS = ['web-production-2275.up.railway.app']
+    ALLOWED_HOSTS = ['web-production-2275.up.railway.app', '127.0.0.1']
 
     DATABASES = {
         'default': {
@@ -156,6 +126,38 @@ else:
     # Stripe
     STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_TEST_PUBLISHABLE_KEY', env('STRIPE_TEST_PUBLISHABLE_KEY'))
     STRIPE_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY', env('STRIPE_TEST_SECRET_KEY'))
+
+
+# 添加 CORS 配置
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173', 
+#     'https://easymath.vercel.app'
+# ]
+# CORS_ALLOW_CREDENTIALS = True
+ 
+CORS_ALLOW_METHODS = (
+  'DELETE',
+  'GET',
+  'OPTIONS',
+  'PATCH',
+  'POST',
+  'PUT',
+  'VIEW',
+)
+ 
+CORS_ALLOW_HEADERS = (
+  'XMLHttpRequest',
+  'X_FILENAME',
+  'accept-encoding',
+  'authorization',
+  'content-type',
+  'dnt',
+  'origin',
+  'user-agent',
+  'x-csrftoken',
+  'x-requested-with',
+)
 
 
 # Password validation
