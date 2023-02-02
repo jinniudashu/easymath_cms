@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'easymath.wsgi.application'
 if os.environ.get('PRODUCTION') == 'True':
     DEBUG = False
     ALLOWED_HOSTS = ['web-production-2275.up.railway.app', '127.0.0.1']
-
+    CSRF_TRUSTED_ORIGINS = ['https://web-production-2275.up.railway.app']
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
