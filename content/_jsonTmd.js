@@ -39,7 +39,6 @@ axios.get(url)
       delete course.id;
       delete course.slug;
       // Write the course data as front matter in a Markdown file in the course directory
-      console.log()
       fs.writeFile(`course/${slug}.md`, `---\ntitle: ${title}\ndescription: ${description}\nthumbnail: ${thumbnail}\nimage: {\n  src: "${course.image.src}",\n  alt: "${course.image.alt}"\n}\n---`, (err) => {
         if (err) throw err;
       });

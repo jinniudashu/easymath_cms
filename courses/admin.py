@@ -26,7 +26,7 @@ class CourseAdmin(admin.ModelAdmin):
     def batch_upload(self, request, queryset):
         batch_upload()
 
-    inlines = [InLineLesson]
+    # inlines = [InLineLesson]
     list_display = ('title', 'description', 'combine_title_and_slug')
     list_display_links = ('title', 'combine_title_and_slug')
     list_filter = ('title',)
