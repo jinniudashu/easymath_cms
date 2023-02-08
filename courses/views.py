@@ -57,13 +57,19 @@ def units_list(request, pk):
 
 
 @api_view(['GET'])
+def lessons_all(request):
+    '''某系列课的所有视频课'''
+    lessons_all = Lesson.objects.all()
+    serializer = LessonSerializer(lessons_all, many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def lessons_list(request, pk):
     '''某系列课的所有视频课'''
     lessons_list = Lesson.objects.filter(course=pk)
     serializer = LessonSerializer(lessons_list, many=True)
-
-    # # thumbnail序列化值去掉开头的‘image/upload/’
-    # serializer_data = remove_thumbnail_prefix(serializer.data)
 
     return Response(serializer.data)
 
@@ -74,9 +80,6 @@ def unit_lessons_list(request, cpk, upk):
     lessons_list = Lesson.objects.filter(course=cpk, unit=upk)
     serializer = LessonSerializer(lessons_list, many=True)
 
-    # # thumbnail序列化值去掉开头的‘image/upload/’
-    # serializer_data = remove_thumbnail_prefix(serializer.data)
-
     return Response(serializer.data)
 
 
@@ -86,9 +89,6 @@ def lesson_detail(request, pk):
     lesson = Lesson.objects.get(id=pk)
     serializer = LessonSerializer(lesson, many=False)
 
-    # # thumbnail序列化值去掉开头的‘image/upload/’
-    # serializer_data = remove_thumbnail_prefix([serializer.data])
-
     return Response(serializer.data)
 
 
@@ -97,4 +97,5 @@ def exercises_list(request, pk):
     '''某视频课的所有练习'''
     exercises_list = Exercise.objects.filter(lesson=pk)
     serializer = ExerciseSerializer(exercises_list, many=True)
+    
     return Response(serializer.data)
