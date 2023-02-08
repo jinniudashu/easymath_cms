@@ -27,8 +27,8 @@ class CourseAdmin(admin.ModelAdmin):
         batch_upload()
 
     # inlines = [InLineLesson]
-    list_display = ('title', 'description', 'combine_title_and_slug')
-    list_display_links = ('title', 'combine_title_and_slug')
+    list_display = ('title', 'description', 'slug')
+    list_display_links = ('title', 'slug')
     list_filter = ('title',)
     search_fields = ('title',)
     fieldsets = (
@@ -42,9 +42,6 @@ class CourseAdmin(admin.ModelAdmin):
         }),
     )
     actions = ['batch_upload']
-
-    def combine_title_and_slug(self, obj):
-        return "{} - {}".format(obj.title, obj.slug)
 
 
 class UnitAdmin(admin.ModelAdmin):
