@@ -37,6 +37,7 @@ class CourseAdmin(admin.ModelAdmin):
                 'slug',
                 'title',
                 'thumbnail',
+                'thumbnail_name',
                 'description',
             )
         }),
@@ -75,6 +76,7 @@ class LessonAdmin(admin.ModelAdmin):
                 'title',
                 'description',
                 'thumbnail',
+                'thumbnail_name',
                 'course',
                 'unit',
                 'position',

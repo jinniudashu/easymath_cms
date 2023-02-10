@@ -10,6 +10,7 @@ class Course(models.Model):
     title = models.CharField(max_length=120, verbose_name='课程名称')
     description = models.TextField(null=True, blank=True, verbose_name='课程描述')
     thumbnail = CloudinaryField('thumbnail', null=True, blank=True)
+    thumbnail_name = models.CharField(max_length=120, null=True, blank=True, verbose_name='课程缩略图文件名')
     
     class Meta:
         verbose_name = '系列课'
@@ -60,6 +61,7 @@ class Lesson(models.Model):
     video = CloudinaryField('video', null=True, blank=True)
     video_additional = CloudinaryField('video_additional', null=True, blank=True)
     thumbnail = CloudinaryField('thumbnail', null=True, blank=True)
+    thumbnail_name = models.CharField(max_length=120, null=True, blank=True, verbose_name='课程缩略图文件名')
     is_free = models.BooleanField(default=False, verbose_name='免费试看')
 
     class Meta:
