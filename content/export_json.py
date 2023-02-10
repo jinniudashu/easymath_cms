@@ -41,6 +41,7 @@ for course in courses:
                 "video": lesson["video"],
                 "video_additional": lesson["video_additional"],
                 "thumbnail": lesson["thumbnail"],
+                "thumbnail_name": lesson["thumbnail_name"],
                 "is_free": lesson["is_free"],
                 "course": lesson["course"],
                 "unit": lesson["unit"]
@@ -61,6 +62,7 @@ for course in courses:
         "title": course["title"],
         "description": course["description"],
         "thumbnail": course["thumbnail"],
+        "thumbnail_name": course["thumbnail_name"],
         "units": final_units
     })
 
