@@ -1,4 +1,4 @@
-# easymath_backend
+# easymath_cms
 
 # URL
 https://web-production-2275.up.railway.app

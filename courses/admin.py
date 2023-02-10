@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Course, Lesson, Unit, Exercise
-from courses.batch_upload.batch_upload import batch_upload
+from courses.batch_upload.down_images import down_images
 
 
 class InLineLesson(admin.TabularInline):
@@ -23,8 +23,8 @@ class InLineExercise(admin.TabularInline):
 
 
 class CourseAdmin(admin.ModelAdmin):
-    def batch_upload(self, request, queryset):
-        batch_upload()
+    def down_images(self, request, queryset):
+        down_images()
 
     # inlines = [InLineLesson]
     list_display = ('title', 'description', 'slug')
@@ -42,7 +42,7 @@ class CourseAdmin(admin.ModelAdmin):
             )
         }),
     )
-    actions = ['batch_upload']
+    actions = ['down_images']
 
 
 class UnitAdmin(admin.ModelAdmin):
